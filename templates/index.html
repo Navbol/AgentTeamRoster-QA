@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal QA Selecciones de Fútbol</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light p-4">
+    <div class="container">
+        <h1 class="mb-4 text-primary">Portal QA - Selecciones de Fútbol</h1>
+        
+        {% if request.args.get('msg_exito') %}
+            <div id="msg-exito" class="alert alert-success">{{ request.args.get('msg_exito') }}</div>
+        {% endif %}
+
+        <!-- 1. Buscar por Selección -->
+        <div class="card mb-3 p-3">
+            <h3>1. Consultar Selección</h3>
+            <form action="/buscar_seleccion" method="GET" class="d-flex gap-2">
+                <input type="text" name="seleccion" class="form-control" placeholder="Ej: Colombia, Argentina" required>
+                <button type="submit" id="btn-buscar-seleccion" class="btn btn-primary">Buscar</button>
+            </form>
+            {% if msg_seleccion %}<div id="msg-error-seleccion" class="alert alert-warning mt-2">{{ msg_seleccion }}</div>{% endif %}
+            {% if jugadores_seleccion %}
+                <ul class="list-group mt-2">
+                {% for j in jugadores_seleccion %}
+                    <li class="list-group-item jugador-card">{{ j.seleccion }}: {{ j.jugador }} - {{ j.posicion }} ({{ j.edad }} años) - {{ j.equipo }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <!-- 2. Buscar por Apellido -->
+        <div class="card mb-3 p-3">
+            <h3>2. Consultar por Apellido</h3>
+            <form action="/buscar_jugador" method="GET" class="d-flex gap-2">
+                <input type="text" name="apellido" class="form-control" placeholder="Ej: Messi, Díaz" required>
+                <button type="submit" id="btn-buscar-jugador" class="btn btn-primary">Buscar</button>
+            </form>
+            {% if msg_apellido %}<div id="msg-error-jugador" class="alert alert-warning mt-2">{{ msg_apellido }}</div>{% endif %}
+            {% if jugadores_apellido %}
+                <ul class="list-group mt-2">
+                {% for j in jugadores_apellido %}
+                    <li class="list-group-item">{{ j.seleccion }}: {{ j.jugador }} | Pos: {{ j.posicion }} | Edad: {{ j.edad }} | Equipo: {{ j.equipo }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <!-- 3. Buscar por Equipo -->
+        <div class="card mb-3 p-3">
+            <h3>3. Consultar por Equipo</h3>
+            <form action="/buscar_equipo" method="GET" class="d-flex gap-2">
+                <input type="text" name="equipo" class="form-control" placeholder="Ej: Real Madrid, Manchester City" required>
+                <button type="submit" id="btn-buscar-equipo" class="btn btn-primary">Buscar</button>
+            </form>
+            {% if msg_equipo %}<div id="msg-error-equipo" class="alert alert-warning mt-2">{{ msg_equipo }}</div>{% endif %}
+            {% if jugadores_equipo %}
+                <ul class="list-group mt-2">
+                {% for j in jugadores_equipo %}
+                    <li class="list-group-item">{{ j.jugador }} ({{ j.seleccion }}) - {{ j.posicion }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <!-- 4. Agregar Jugador -->
+        <div class="card mb-3 p-3">
+            <h3>4. Agregar Jugador</h3>
+            <form action="/agregar_jugador" method="POST" class="row g-2">
+                <div class="col-md-2"><input type="text" name="seleccion" class="form-control" placeholder="Selección" required></div>
+                <div class="col-md-3"><input type="text" name="jugador" class="form-control" placeholder="Nombre Jugador" required></div>
+                <div class="col-md-2"><input type="text" name="posicion" class="form-control" placeholder="Posición" required></div>
+                <div class="col-md-2"><input type="number" name="edad" class="form-control" placeholder="Edad" required></div>
+                <div class="col-md-3"><input type="text" name="equipo" class="form-control" placeholder="Equipo" required></div>
+                <div class="col-12"><button type="submit" id="btn-agregar-jugador" class="btn btn-success">Guardar Jugador</button></div>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Python / Flask
+.venv/
+__pycache__/
+*.pyc
+
+# Node / Playwright
+node_modules/
+test-results/
+playwright-report/
+.playwright-artifacts/
+
+# Sistema
+.DS_Store
+Thumbs.db
